@@ -4,17 +4,15 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import cors, { CorsOptions } from 'cors';
-import { PORT_SERVER } from "./config/config";
+import * as config from "./config/config";
 import router from "./api/routes";
 import responseHandler from "./api/helpers/response-handler";
 import errorHandler from "./api/helpers/error-handler";
 import helmet from "helmet";
-// import requestHandler from './api/helpers/request-handler';
 
 const volleyball = require("volleyball");
 
 const app: Application = express();
-
 
 // Set Cors Policy
 const whitelist: string[] = ['http://localhost:3000', 'http://localhost:5000'];
@@ -38,9 +36,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(volleyball);
 
-// Request Handler
-// app.use(requestHandler.helper());
-
 // Response Handler
 app.use(responseHandler.helper());
 
@@ -60,8 +55,8 @@ app.all('*', errorHandler.helper());
 // Create Server
 const server: Server = http.createServer(app);
 try {
-    server.listen(PORT_SERVER, () => {
-        console.log(`Server listening to port ${PORT_SERVER}`);
+    server.listen(config.PORT_SERVER, () => {
+        console.log(`Server listening to port ${config.PORT_SERVER}`);
     });
 } catch (error) {
     console.log(`Error occurred: ${error.message}`);
